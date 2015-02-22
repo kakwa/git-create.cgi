@@ -8,6 +8,8 @@ git-create.cgi is a quick and dirty perl cgi to create git repositories.
 It offers some optional basic integration with trac (register the new git repositories inside 
 a trac instance).
 
+git-create.cgi is licensed under MIT.
+
 ## Installation ##
 
 ```bash
