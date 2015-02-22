@@ -69,7 +69,7 @@ The configuration is done inside the apache git vhost:
   SetEnv GIT_PROJECT_ROOT /var/www/git/repo/
   ScriptAlias /git /usr/lib/git-core/git-http-backend
   
-  # script alias to git-create.cgi (may change according to PREFIX in make call
+  # script alias to git-create.cgi (may change according to PREFIX in make call)
   ScriptAlias / /usr/local/libexec/git-create/git-create.cgi
 </VirtualHost>
 ```
