@@ -54,6 +54,7 @@ background:#eee;
 table{
 border:1px solid #ccc;
 border-collapse:collapse;
+background:#FFF;
 margin:5px 0;
 width:100%;
 font-size:small;
