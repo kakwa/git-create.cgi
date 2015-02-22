@@ -14,6 +14,71 @@ use CGI::Carp qw(fatalsToBrowser);
 my $cgi = new CGI;
 $|++;
 
+
+my $color = $cgi->param("color") || "#e1e5ff";
+my $css = <<EOT;
+body{
+background:$color;
+font-family:sans-serif;
+font-size:11pt;
+padding:0;
+margin:0;
+}
+#content{
+background:#fff;
+padding:10px;
+margin:0 5%;
+}
+#menu{
+text-align:center;
+margin-top:30px;
+}
+a{
+text-decoration:none;
+font-weight:bold;
+}
+h1{
+font-size:16pt;
+text-align:center;
+margin:5px 100px;
+border:2px solid $color;
+}
+h2{
+border-bottom:2px solid $color;
+}
+p.note{
+border:1px solid #ccc;
+padding:5px;
+background:#eee;
+}
+table{
+border:1px solid #ccc;
+border-collapse:collapse;
+margin:5px 0;
+width:100%;
+font-size:small;
+}
+tr{
+border:1px dotted #ccc;
+}
+tr:hover{
+background:#eee;
+}
+th{
+background:#eee;
+}
+td, th{
+padding:3px 5px;
+}
+td.emphase{
+background-color:#eee;
+font-weight:bold;
+}
+ul {
+list-style-type:none;
+}
+EOT
+
 my %settings = (title    => "Git Creation Page",
                 gitdir   => "/var/www/git/",
                 gitcmd   => "/usr/bin/git",
@@ -122,7 +187,8 @@ sub return_link{
 sub print_page_headers {
   my $title = $settings{title} || "Page without a title";
   print $cgi->header(-charset => 'utf-8');
-  print $cgi->start_html($title);
+  print $cgi->start_html( -title => "$title",
+	 -style => { -code => $css });
   print $cgi->h2($title);
   print $cgi->hr();
   return;
