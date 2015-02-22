@@ -69,6 +69,30 @@ if ($ENV{REQUEST_METHOD} eq 'POST'){
 
 
 sub process_form{
+  my %data;
+  for my $field ($cgi->param()){
+    if ( scalar grep /^\Q$field\E$/, @{$settings{fields}} ){
+      # its a field we know about
+      my $tmp = substr($cgi->param($field), 0, 50);
+      $tmp = lc($tmp) if ( $field eq "change_user_name" );
+      $data{$field} = $tmp || '';
+    }
+  }
+  if ( "$data{newgitname}" eq ''){
+    print "Missing New Git Name.";
+    return;
+  }
+  if ( $data{newgitname} =~ m/^\..*/ 
+	or $data{newgitname} =~ m/.*\/.*/ 
+	or  $data{newgitname} =~ m/.*\ .*/) {
+    print "Forbidden character in new Git name.";
+    return;
+  }
+
+  if ( -d "$settings{gitdir}/$data{newgitname}/" ){
+    print "Git repository '$data{newgitname}' already exists.";
+    return;
+  }
   return;
 }
 
