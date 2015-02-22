@@ -17,7 +17,7 @@ $|++;
 my %settings = (title    => "Git Creation Page",
                 gitdir   => "/var/www/git/",
                 gitcmd   => "/usr/bin/git",
-                withtrac => "true",
+                withtrac => "false",
 		gitalias => "gitdir",
                 traccmd  => "/usr/bin/trac-admin",
                 tracdir  => "/var/www/trac/",
@@ -104,11 +104,9 @@ sub process_form{
   print $fh "$data{newgitdesc}" or die $!;
   close $fh;
   
-  if ($settings{withtrac} eq 'yes'){
-    system("$settings{traccmd} '$settings{tracdir}' repository \
-	add '$data{newgitname}' '$settings{gitdir}/$data{newgitname}/' git") and die $!;
-    system("$settings{traccmd} '$settings{tracdir}' repository \
-	set '$data{newgitname}' description '$data{newgitdesc}'") and die $!;
+  if ($settings{withtrac} eq 'true'){
+    system("$settings{traccmd} '$settings{tracdir}' repository add '$data{newgitname}' '$settings{gitdir}/$data{newgitname}/' git") and die $!;
+    system("$settings{traccmd} '$settings{tracdir}' repository set '$data{newgitname}' description '$data{newgitdesc}'") and die $!;
 
   }
   return;
