@@ -204,10 +204,10 @@ sub print_git_repos {
   print $cgi->Tr(
 	 $cgi->th(['Name', 'URL', 'Description'])
   );
-  opendir(my $dh, $settings{gitdir}) || die;
-  #foreach my $dir (sort { -d $a <=> -d $b } readdir($dh)) {
-  while(readdir $dh) {
-    my $dir = $_;
+  opendir(dh, $settings{gitdir}) || die;
+  my @gitrepo = readdir(dh);
+  @gitrepo = sort @gitrepo;
+  while( my $dir = shift @gitrepo ) {
     my $desc = '';
     if ( -f "$settings{gitdir}/$dir/config"){
       if( -f "$settings{gitdir}/$dir/description"){
