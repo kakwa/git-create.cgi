@@ -8,7 +8,7 @@ BEGIN {
 
 use strict;
 use CGI;
-use Path::Class qw(file);
+#use Path::Class qw(file);
 use CGI::Carp qw(fatalsToBrowser);
 #use Apache::Htpasswd;
 my $cgi = new CGI;
@@ -18,10 +18,31 @@ my %settings = (title    => "Git Creation Page",
                 gitdir   => "/var/www/git/",
                 gitcmd   => "/usr/bin/git",
                 withtrac => "true",
+		gitalias => "gitdir",
                 traccmd  => "/usr/bin/trac-admin",
+                tracdir  => "/var/www/trac/",
                 fields   => [ "newgitname", "newgitdesc" ],
                );
 $settings{user} = $ENV{REMOTE_USER};
+
+if ( $ENV{GITDIR} ){
+   $settings{gitdir} = $ENV{GITDIR};
+}
+if ( $ENV{GITCMD} ){
+   $settings{gitcmd} = $ENV{GITCMD};
+}
+if ( $ENV{WITHTRAC} ){
+   $settings{withtrac} = $ENV{WITHTRAC};
+}
+if ( $ENV{TRACCMD} ){
+   $settings{traccmd} = $ENV{TRACCMD};
+}
+if ( $ENV{TRACDIR} ){
+   $settings{tracdir} = $ENV{TRACDIR};
+}
+if ( $ENV{GITALIAS} ){
+   $settings{gitalias} = $ENV{GITALIAS};
+}
 
 our $proto = 'http://';
 if ( $ENV{HTTPS} eq 'on' ){
@@ -29,23 +50,32 @@ if ( $ENV{HTTPS} eq 'on' ){
 }
 
 #$settings{gitdir} =~ s%$ENV{DOCUMENT_ROOT}%% ;
-my $abspath = file $settings{gitdir};
-my $gitpath = $abspath->relative($ENV{DOCUMENT_ROOT});
+#my $abspath = file $settings{gitdir};
+my $gitpath = $settings{gitalias};
 
 if ($ENV{REQUEST_METHOD} eq 'GET'){
-print_page_headers();
-print_form();
-print_git_repos();
-print_end();
+  print_page_headers();
+  print_form();
+  print_git_repos();
+  print_end();
 }
 if ($ENV{REQUEST_METHOD} eq 'POST'){
-print_page_headers();
-#process_form();
-print_header();
-print_end();
+  print_page_headers();
+  process_form();
+  return_link();
+#  print_header();
+  print_end();
 }
 
 
+sub process_form{
+  return;
+}
+
+sub return_link{
+  
+  return;
+}
 
 # print page header
 sub print_page_headers {
@@ -62,7 +92,6 @@ sub print_page_headers {
 sub print_git_repos {
   my $gitdir = $settings{gitdir} || die "Missing GIT Directory Parameter";
   print $cgi->h3("Existing Git Repositories");
-  print $gitpath;
   print $cgi->hr();
   print $cgi->start_table({-border=>1});
   print $cgi->Tr(
