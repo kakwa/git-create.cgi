@@ -49,8 +49,6 @@ if ( $ENV{HTTPS} eq 'on' ){
   $proto = 'https://';
 }
 
-#$settings{gitdir} =~ s%$ENV{DOCUMENT_ROOT}%% ;
-#my $abspath = file $settings{gitdir};
 my $gitpath = $settings{gitalias};
 
 if ($ENV{REQUEST_METHOD} eq 'GET'){
@@ -63,10 +61,13 @@ if ($ENV{REQUEST_METHOD} eq 'POST'){
   print_page_headers();
   process_form();
   return_link();
-#  print_header();
   print_end();
 }
 
+sub fail{
+  print "$_";
+  exit 1;
+}
 
 sub process_form{
   my %data;
@@ -93,10 +94,28 @@ sub process_form{
     print "Git repository '$data{newgitname}' already exists.";
     return;
   }
+
+  mkdir "$settings{gitdir}/$data{newgitname}/" or die $!;
+  chdir "$settings{gitdir}/$data{newgitname}/" or die $!;
+  system("$settings{gitcmd} init --bare") and die $!;
+  system("$settings{gitcmd} update-server-info") and die $!;
+  
+  open(my $fh, '>', "$settings{gitdir}/$data{newgitname}/description") or die $!;
+  print $fh "$data{newgitdesc}" or die $!;
+  close $fh;
+  
+  if ($settings{withtrac} eq 'yes'){
+    system("$settings{traccmd} '$settings{tracdir}' repository \
+	add '$data{newgitname}' '$settings{gitdir}/$data{newgitname}/' git") and die $!;
+    system("$settings{traccmd} '$settings{tracdir}' repository \
+	set '$data{newgitname}' description '$data{newgitdesc}'") and die $!;
+
+  }
   return;
 }
 
 sub return_link{
+  print "<br><a href=\"$ENV{URI}\">Return</a>";
   
   return;
 }
