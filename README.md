@@ -10,6 +10,10 @@ a trac instance).
 
 git-create.cgi is licensed under MIT.
 
+## Screenshots ##
+
+<img height="400" src="https://raw.github.com/kakwa/git-create.cgi/master/screenshots/main.png"/>
+
 ## Installation ##
 
 ```bash
