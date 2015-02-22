@@ -1,5 +1,5 @@
 # git-create.cgi #
-Simple CGI to create git repositories
+Simple perl CGI to create git repositories.
 
 ## Description ##
 
@@ -24,6 +24,17 @@ make install
 git-create.cgi is installed inside "$(LIBEXECDIR)/git-create"
 
 ## Configuration ##
+
+### Parameters ###
+
+Configuration is done through the environment variables of the vhost:
+
+* **GITDIR**: path containing the git repositories (must be writtable by the http server user)
+* **GITCMD**: path to the git command
+* **GITALIAS**: script alias for git repo (path between hostname and actual repo in git repo url)
+* **WITHTRAC**: activate trac support (values: **true** or **false**)
+* **TRACDIR**: trac environment directory
+* **TRACCMD**: path to the trac command
 
 ### Apache ###
 
