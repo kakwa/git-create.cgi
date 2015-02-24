@@ -151,7 +151,8 @@ sub process_form{
   }
   if ( $data{newgitname} =~ m/^\..*/ 
 	or $data{newgitname} =~ m/.*\/.*/ 
-	or  $data{newgitname} =~ m/.*\ .*/) {
+	or  $data{newgitname} =~ m/.*\ .*/
+	or $data{newgitname} !~ m/^[\d\w_\-.]*$/ ) {
     print "Forbidden character in new Git name.";
     return;
   }
