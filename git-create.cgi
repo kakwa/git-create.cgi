@@ -172,9 +172,13 @@ sub process_form{
   close $fh;
   
   if ($settings{withtrac} eq 'true'){
-    system("$settings{traccmd} '$settings{tracdir}' repository add '$data{newgitname}' '$settings{gitdir}/$data{newgitname}/' git") and die $!;
-    system("$settings{traccmd} '$settings{tracdir}' repository set '$data{newgitname}' description '$data{newgitdesc}'") and die $!;
-
+    system("$settings{traccmd}", "$settings{tracdir}", 
+	"repository", "add", "$data{newgitname}", 
+	"$settings{gitdir}/$data{newgitname}/", "git") and die $!;
+    system("$settings{traccmd}",
+	"$settings{tracdir}", "repository", 
+	"set", "$data{newgitname}", 
+	"description", "$data{newgitdesc}") and die $!;
   }
   return;
 }
