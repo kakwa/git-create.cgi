@@ -14,6 +14,7 @@ use CGI::Carp qw(fatalsToBrowser);
 my $cgi = new CGI;
 $|++;
 
+$ENV{LANG} = 'en_US.UTF-8';
 
 my $color = $cgi->param("color") || "#e1e5ff";
 my $css = <<EOT;
@@ -153,9 +154,11 @@ sub process_form{
 	or $data{newgitname} =~ m/.*\/.*/ 
 	or  $data{newgitname} =~ m/.*\ .*/
 	or $data{newgitname} !~ m/^[\d\w_\-.]*$/ ) {
-    print "Forbidden character in new Git name.";
+    print "Forbidden character(s) in new Git name.";
     return;
   }
+
+  $data{newgitdesc} =~ s/'/’/g;
 
   if ( -d "$settings{gitdir}/$data{newgitname}/" ){
     print "Git repository '$data{newgitname}' already exists.";
